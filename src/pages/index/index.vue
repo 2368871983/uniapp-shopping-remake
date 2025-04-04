@@ -5,6 +5,7 @@ import '@/utils/request'
 
 <template>
   <CustomNavbar></CustomNavbar>
+  <XtxSwiper></XtxSwiper>
 </template>
 
 <style lang="scss"></style>
