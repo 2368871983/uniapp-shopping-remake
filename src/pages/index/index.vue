@@ -48,11 +48,32 @@ onLoad(() => {
   getHomeCategoryData()
   getHomeHotData()
 })
+// 下拉刷新
+const isTriggered = ref(false)
+const onRefresherrefresh = async () => {
+  isTriggered.value = true
+  guessRef.value.resetData()
+  await Promise.all([
+    getHomeBannerData(),
+    getHomeCategoryData(),
+    getHomeHotData(),
+    guessRef.value?.getMore(),
+  ]).then(() => {
+    isTriggered.value = false
+  })
+}
 </script>
 
 <template>
   <CustomNavbar></CustomNavbar>
-  <scroll-view @scrolltolower="onScrolltolower" class="scroll-view" scroll-y>
+  <scroll-view
+    refresher-enabled
+    @refresherrefresh="onRefresherrefresh"
+    @scrolltolower="onScrolltolower"
+    :refresher-triggered="isTriggered"
+    class="scroll-view"
+    scroll-y
+  >
     <XtxSwiper :bannerList="BannerList"></XtxSwiper>
     <CategoryPanel :categoryList="CategoryList"></CategoryPanel>
     <HotPanel :hotlist="HotList"></HotPanel>

@@ -7,9 +7,15 @@ import { onMounted, ref } from 'vue'
 const finish = ref(false)
 // 分页参数
 const pageParams = ref({
-  page: 29,
+  page: 1,
   pageSize: 10,
 })
+// 重置分页参数
+const resetData = () => {
+  pageParams.value.page = 1
+  GuessList.value = []
+  finish.value = false
+}
 // 获取首页猜你喜欢数据
 const GuessList = ref<GuessItem[]>([])
 const getHomeGoodsGuessLikeData = async () => {
@@ -22,7 +28,6 @@ const getHomeGoodsGuessLikeData = async () => {
     return
   }
   const res = await getHomeGoodsGuessLikeAPI(pageParams.value)
-
   if (pageParams.value.page < res.result.pages) {
     GuessList.value.push(...res.result.items)
     pageParams.value.page++
@@ -33,6 +38,7 @@ const getHomeGoodsGuessLikeData = async () => {
 
 defineExpose({
   getMore: getHomeGoodsGuessLikeData,
+  resetData,
 })
 // 页面加载
 onMounted(() => {
