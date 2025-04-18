@@ -4,6 +4,12 @@ import type { HotItem } from '@/types/home'
 defineProps<{
   hotlist: HotItem[]
 }>()
+// 定义方法，用于跳转页面
+const navigateToHotPage = (type: string) => {
+  uni.navigateTo({
+    url: `/pages/hot/hot?type=${type}`,
+  })
+}
 </script>
 
 <template>
@@ -14,7 +20,7 @@ defineProps<{
         <text class="title-text">{{ item.title }}</text>
         <text class="title-desc">{{ item.alt }}</text>
       </view>
-      <navigator hover-class="none" url="/pages/hot/hot" class="cards">
+      <navigator class="cards" @click="navigateToHotPage(item.type)">
         <image
           v-for="src in item.pictures"
           :key="src"
